@@ -1,13 +1,26 @@
 dbt_project:
+  target: local
   outputs:
-    dev:
+    local:
       type: duckdb
-      path: dev.duckdb
+      path: db.duckdb
+      schema: dbt
       threads: 1
+      extensions: 
+        - httpfs
+      settings:
+        s3_region: "{{ env_var('S3_REGION') }}"
+        s3_access_key_id: "{{ env_var('S3_ACCESS_KEY_ID') }}"
+        s3_secret_access_key: "{{ env_var('S3_SECRET_ACCESS_KEY') }}"
 
     prod:
       type: duckdb
-      path: prod.duckdb
+      path: md:PROD
+      schema: dbt
       threads: 4
-
-  target: dev
+      extensions: 
+        - httpfs
+      settings:
+        s3_region: "{{ env_var('S3_REGION') }}"
+        s3_access_key_id: "{{ env_var('S3_ACCESS_KEY_ID') }}"
+        s3_secret_access_key: "{{ env_var('S3_SECRET_ACCESS_KEY') }}"
